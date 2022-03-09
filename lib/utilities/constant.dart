@@ -16,5 +16,11 @@ const subtitle1 = TextStyle(
     fontFamily: 'RobotoCondensed',
     color: Colors.white
 );
+const subtitle2 = TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.bold,
+    fontFamily: 'RobotoCondensed',
+    color: Colors.black,
+);
 
 const canvasColor =  Color.fromRGBO(255, 2554, 229, 1);

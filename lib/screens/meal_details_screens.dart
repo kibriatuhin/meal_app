@@ -3,7 +3,9 @@ import 'package:meals_app/dummy_data.dart';
 
 class MealDetailsScreens extends StatelessWidget {
   static const routeName = "/meal_details";
-  const MealDetailsScreens({Key? key}) : super(key: key);
+  final Function? toggoleFavorite ;
+  final Function? isFavorite ;
+  const MealDetailsScreens({Key? key, required this.toggoleFavorite,required this.isFavorite}) : super(key: key);
 
   Widget buildSectionTitle(BuildContext context, String text) {
     return Container(
@@ -37,69 +39,74 @@ class MealDetailsScreens extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final routesArg = ModalRoute.of(context)?.settings.arguments as String;
+    final mealId = ModalRoute.of(context)?.settings.arguments as String;
 
     final mealsDetails = DUMMY_MEALS.firstWhere((element) {
-      return element.id.contains(routesArg);
+      return element.id.contains(mealId);
     });
 
-
     return Scaffold(
-        appBar: AppBar(
-          title: Text(mealsDetails.title),
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                height: 250,
-                width: double.infinity,
-                child: Image.network(
-                  mealsDetails.imageUrl,
-                  fit: BoxFit.cover,
-                ),
+      appBar: AppBar(
+        title: Text(mealsDetails.title),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              height: 250,
+              width: double.infinity,
+              child: Image.network(
+                mealsDetails.imageUrl,
+                fit: BoxFit.cover,
               ),
-              buildSectionTitle(context, "Ingredients"),
-              buildContainer(ListView.builder(
-                  itemCount: mealsDetails.ingredients.length,
-                  itemBuilder: (context, index) {
-                    return Card(
-                      color: Colors.white70,
-                      child: Padding(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                        child: Text(mealsDetails.ingredients[index]),
-                      ),
-                    );
-                  })),
-              buildSectionTitle(context, "Steps"),
-              buildContainer(ListView.builder(
-                  itemCount: mealsDetails.steps.length,
-                  itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        ListTile(
-                          leading: CircleAvatar(
-                            child: Text('${index + 1}'),
-                          ),
-                          title: Text(
-                            mealsDetails.steps[index],
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 15,
-                            ),
+            ),
+            buildSectionTitle(context, "Ingredients"),
+            buildContainer(ListView.builder(
+                itemCount: mealsDetails.ingredients.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    color: Colors.white70,
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                      child: Text(mealsDetails.ingredients[index]),
+                    ),
+                  );
+                })),
+            buildSectionTitle(context, "Steps"),
+            buildContainer(ListView.builder(
+                itemCount: mealsDetails.steps.length,
+                itemBuilder: (context, index) {
+                  return Column(
+                    children: [
+                      ListTile(
+                        leading: CircleAvatar(
+                          child: Text('${index + 1}'),
+                        ),
+                        title: Text(
+                          mealsDetails.steps[index],
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 15,
                           ),
                         ),
-                        Divider()
-
-                      ],
-                    );
-                  })),
-              SizedBox(
-                height: 10,
-              )
-            ],
-          ),
-        ));
+                      ),
+                      Divider()
+                    ],
+                  );
+                })),
+            SizedBox(
+              height: 10,
+            )
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(
+            isFavorite!(mealId)? Icons.star: Icons.star_border,
+        ),
+        onPressed:()=>  toggoleFavorite!(mealId),
+      ),
+    );
   }
 }

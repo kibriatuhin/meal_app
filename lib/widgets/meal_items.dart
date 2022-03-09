@@ -11,6 +11,7 @@ class MealItems extends StatelessWidget {
   final Complexity complexity;
   final Affordability affordability;
 
+
   const MealItems(
       {Key? key,
       required this.title,
@@ -21,7 +22,13 @@ class MealItems extends StatelessWidget {
       : super(key: key);
 
   void selectMeal(BuildContext context) {
-    Navigator.of(context).pushNamed(MealDetailsScreens.routeName,arguments:id );
+    Navigator.of(context).pushNamed(MealDetailsScreens.routeName,arguments:id ).then((value) {
+      if(value != null)
+        {
+          //removeItem(value);
+        }
+      //print(value);
+    });
   }
 
   String get complexityText {
